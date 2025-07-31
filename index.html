@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selamat Debut 2.0 Tintin Rexthalia!</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a2e; /* Darker blue-purple background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow: hidden; /* Prevent scrollbar from background pattern */
+        }
+        .container {
+            background-color: #2b2b4d; /* Slightly lighter dark for container */
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6); /* Stronger shadow */
+            padding: 3rem; /* Increased padding */
+            max-width: 850px; /* Adjusted max-width for larger canvas */
+            width: 100%;
+            text-align: center;
+            animation: fadeInScale 1s ease-out forwards;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #4d4d6e; /* Subtle border */
+        }
+        /* Subtle dinosaur scale pattern background */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('data:image/svg+xml;utf8,<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"><path d="M50 0L100 25L50 50L0 25Z" fill="%233A4252" fill-opacity="0.1"/><path d="M50 50L100 75L50 100L0 75Z" fill="%233A4252" fill-opacity="0.1"/></svg>');
+            background-size: 60px 60px; /* Slightly larger pattern */
+            opacity: 0.15; /* Slightly less opaque */
+            z-index: 0;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: translateY(-30px) scale(0.95); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .password-display {
+            background-color: #1a1a2e; /* Darker background for display */
+            color: #90ee90; /* Light green for display text (dinosaur accent) */
+            font-size: 2.5rem; /* Larger font for display */
+            font-weight: 700;
+            padding: 1rem 1.5rem;
+            border-radius: 0.75rem;
+            margin-bottom: 2rem; /* Increased margin */
+            min-height: 3.5rem; /* Ensure minimum height */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            letter-spacing: 5px; /* More letter spacing for underscores */
+            border: 2px solid #6a5acd; /* Purple border for display */
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.2rem; /* Larger gap */
+            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        .keypad button {
+            background-color: #4a4a70; /* Medium blue-purple for keys */
+            color: #e0e0f0; /* Off-white text for keys */
+            padding: 1.5rem 1rem; /* Even larger touch targets */
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1.8rem; /* Larger font for keys */
+            cursor: pointer;
+            transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border: none;
+        }
+        .keypad button:hover {
+            background-color: #6a6ab0; /* Lighter blue-purple on hover */
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.4);
+        }
+        .keypad button:active {
+            transform: translateY(0);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+        }
+        .keypad button.action-btn {
+            background-image: linear-gradient(to right, #9370DB, #8A2BE2); /* Brighter purple gradient for action buttons */
+            color: white;
+            font-size: 1.3rem; /* Slightly larger font for action text */
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .keypad button.action-btn:hover {
+            background-image: linear-gradient(to right, #7B68EE, #6A1BA0); /* Darker gradient on hover */
+        }
+        .keypad button.clear-btn {
+            background-color: #FF6347; /* Tomato red for clear */
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        .keypad button.clear-btn:hover {
+            background-color: #CD5C5C; /* Darker red on hover */
+        }
+        .message-box {
+            background-color: #ffe0b2; /* Light orange for error */
+            color: #e65100; /* Dark orange text */
+            border: 1px solid #ffb74d; /* Orange border */
+            border-radius: 0.5rem;
+            padding: 0.75rem;
+            margin-top: 2rem; /* Increased margin top */
+            font-size: 1rem;
+            font-weight: 500;
+            display: none; /* Hidden by default */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .congratulations-content {
+            display: none; /* Hidden by default */
+            animation: slideInUp 1s ease-out forwards;
+            position: relative; /* Needed for absolute positioning of falling dino */
+            overflow: hidden; /* Hide dino when it falls off-screen */
+            padding-bottom: 2rem; /* Add padding for the game */
+        }
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            font-size: 3.2rem; /* Even larger heading */
+            font-weight: 800; /* Extra bold */
+            color: #e0e0f0; /* Off-white for headings on dark background */
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px rgba(144, 238, 144, 0.6); /* Stronger glow */
+        }
+        p {
+            font-size: 1.3rem; /* Slightly larger paragraph text */
+            color: #c0c0d0; /* Lighter gray for paragraphs */
+            line-height: 1.8; /* More comfortable line height */
+            margin-bottom: 1.5rem;
+        }
+        .signature {
+            margin-top: 2.5rem; /* More space */
+            font-style: italic;
+            color: #a0a0b0; /* Even lighter gray for signature */
+            font-size: 1.1rem;
+        }
+        /* Dinosaur accent for the main title */
+        .dinosaur-accent::before {
+            content: '🦖 '; /* Dinosaur emoji */
+            margin-right: 12px; /* More space */
+            font-size: 2.8rem; /* Larger emoji */
+            vertical-align: middle;
+        }
+        .dinosaur-accent::after {
+            content: ' 🦕'; /* Another dinosaur emoji */
+            margin-left: 12px; /* More space */
+            font-size: 2.8rem; /* Larger emoji */
+            vertical-align: middle;
+        }
+        .congratulations-content h1 .dinosaur-accent::before,
+        .congratulations-content h1 .dinosaur-accent::after {
+            animation: bounce 1s infinite alternate; /* Subtle bounce animation for emojis */
+        }
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-8px); } /* Slightly more bounce */
+        }
+
+        /* Falling Dinosaur Styles */
+        .falling-dino {
+            position: absolute;
+            font-size: 5rem; /* Large dino */
+            top: -100px; /* Start off-screen */
+            opacity: 0;
+            z-index: 2; /* Above other content */
+            text-shadow: 0 0 15px rgba(144, 238, 144, 0.8); /* Glow for falling dino */
+        }
+
+        .falling-dino.active-dino-fall {
+            animation: fallDown 3s ease-in-out forwards; /* Fall animation */
+        }
+
+        @keyframes fallDown {
+            0% {
+                top: -100px;
+                opacity: 0;
+                transform: translateX(0) rotate(0deg); /* Initial transform */
+            }
+            10% {
+                opacity: 1; /* Fade in quickly */
+            }
+            80% {
+                top: calc(100% - 100px); /* Falls almost to the bottom of the container */
+                transform: translateX(0) rotate(720deg); /* Spins twice */
+            }
+            100% {
+                top: 110%; /* Falls off-screen below */
+                opacity: 0; /* Fade out */
+                transform: translateX(0) rotate(1080deg); /* Continues spinning */
+            }
+        }
+
+        /* Dino Game Styles */
+        #dinoGameCanvas {
+            background-color: #3a3a5a; /* Darker background for game */
+            border-radius: 0.75rem;
+            margin-top: 2rem;
+            display: block; /* Ensure it takes full width */
+            width: 800px; /* Larger width for the game area */
+            height: 250px; /* Larger height for the game area */
+            border: 2px solid #4d4d6e;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+            margin-left: auto; /* Center the canvas */
+            margin-right: auto; /* Center the canvas */
+        }
+        #gameInstructions {
+            color: #c0c0d0;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+        #gameScore {
+            color: #90ee90;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+        #gameOverMessage {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-top: 1rem;
+            display: none;
+        }
+        #restartButton {
+            background-image: linear-gradient(to right, #9370DB, #8A2BE2);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: none;
+            margin-top: 1rem;
+            display: none;
+        }
+        #restartButton:hover {
+            background-image: linear-gradient(to right, #7B68EE, #6A1BA0);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="password-section">
+            <h1 class="text-white dinosaur-accent">SELAMAT DATANG!</h1>
+            <p class="mb-6">Untuk melihat pesan spesial, silakan masukkan kata sandinya:</p>
+
+            <div id="passwordDisplay" class="password-display"></div>
+
+            <div class="keypad">
+                <button class="keypad-btn" data-value="1">1</button>
+                <button class="keypad-btn" data-value="2">2</button>
+                <button class="keypad-btn" data-value="3">3</button>
+                <button class="keypad-btn" data-value="4">4</button>
+                <button class="keypad-btn" data-value="5">5</button>
+                <button class="keypad-btn" data-value="6">6</button>
+                <button class="keypad-btn" data-value="7">7</button>
+                <button class="keypad-btn" data-value="8">8</button>
+                <button class="keypad-btn" data-value="9">9</button>
+                <button class="keypad-btn clear-btn" data-action="clear">HAPUS</button>
+                <button class="keypad-btn" data-value="0">0</button>
+                <button class="keypad-btn action-btn" data-action="submit">MASUK</button>
+            </div>
+            <div id="messageBox" class="message-box"></div>
+        </div>
+
+        <div id="congratulations-section" class="congratulations-content">
+            <!-- Dinosaurus akan ditambahkan secara dinamis di sini -->
+            <h1 class="text-white dinosaur-accent">🌟 ERA BARU DIMULAI! 🌟</h1>
+            <p>
+                Selamat atas debut 2.0-mu yang spektakuler, Tintin Rexthalia! Ini adalah momen yang telah kami nantikan dengan napas tertahan, sebuah puncak dari dedikasi tak tergoyahkan dan semangat juangmu yang luar biasa. Setiap langkah yang kau ambil, setiap tantangan yang kau hadapi, telah membentukmu menjadi bintang yang bersinar terang hari ini.
+            </p>
+            <p>
+                Kami semua berdiri di sini, dipenuhi kebanggaan yang meluap, menyaksikan lahirnya sebuah legenda. Ini bukan hanya sebuah awal, melainkan gerbang menuju petualangan epik yang tak terbatas, di mana setiap panggung adalah kanvas untuk karyamu, dan setiap audiens adalah saksi bisu kehebatanmu.
+            </p>
+            <p>
+                Teruslah gemilang, taklukkan setiap panggung dengan pesonamu yang unik, dan biarkan sinarmu menerangi setiap sudut dunia. Kami tak sabar menanti setiap jejak langkahmu yang menginspirasi, setiap melodi yang kau ciptakan, dan setiap impian yang kau wujudkan. Dunia siap menyambut kilauan bintangmu yang tak tertandingi!
+            </p>
+            <p class="signature">Dengan bangga dan sorak-sorai membahana, dari seluruh penggemar dan keluarga besarmu yang selalu mendukung.</p>
+            <p class="signature">TintinRexthaliaTheLegend EraBaruTintin</p>
+
+            <hr class="my-8 border-t-2 border-gray-700"> <!-- Separator -->
+
+            <h2 class="text-white text-2xl font-bold mb-4 dinosaur-accent">Mainkan Game Dinosaurus!</h2>
+            <p id="gameInstructions">Tekan Spasi atau klik untuk melompat dan memulai game.</p>
+            <div id="gameScore" class="text-green-400">Skor: 0</div>
+            <canvas id="dinoGameCanvas" width="800" height="250"></canvas>
+            <div id="gameOverMessage"></div>
+            <button id="restartButton">Mulai Ulang</button>
+        </div>
+    </div>
+
+    <script>
+        // Mendapatkan referensi elemen-elemen HTML
+        const passwordDisplay = document.getElementById('passwordDisplay');
+        const keypad = document.querySelector('.keypad');
+        const passwordSection = document.getElementById('password-section');
+        const congratulationsSection = document.getElementById('congratulations-section');
+        const messageBox = document.getElementById('messageBox');
+
+        // Password yang benar (tanggal debut Tintin dalam format DDMMYYYY)
+        // Telah diubah ke tanggal besok: 01 Agustus 2025 -> "01082025"
+        const correctPassword = "01082025"; // Ganti dengan tanggal debut yang sebenarnya!
+        let enteredPassword = ""; // Variabel untuk menyimpan password yang dimasukkan
+
+        // Fungsi untuk menampilkan password yang dimasukkan (angka terlihat, sisanya underscore)
+        function updatePasswordDisplay() {
+            let displayString = "";
+            for (let i = 0; i < correctPassword.length; i++) {
+                if (i < enteredPassword.length) {
+                    displayString += enteredPassword[i];
+                } else {
+                    displayString += "_";
+                }
+                if (i < correctPassword.length - 1) {
+                    displayString += " "; // Tambahkan spasi antar karakter
+                }
+            }
+            passwordDisplay.textContent = displayString;
+        }
+
+        // Fungsi untuk menampilkan pesan kesalahan
+        function showMessage(message, isError = true) {
+            messageBox.textContent = message;
+            messageBox.style.display = 'block';
+            if (isError) {
+                messageBox.classList.remove('bg-green-100', 'text-green-700', 'border-green-300');
+                messageBox.classList.add('bg-red-100', 'text-red-700', 'border-red-300');
+            } else {
+                messageBox.classList.remove('bg-red-100', 'text-red-700', 'border-red-300');
+                messageBox.classList.add('bg-green-100', 'text-green-700', 'border-green-300');
+            }
+        }
+
+        // Fungsi untuk menyembunyikan pesan
+        function hideMessage() {
+            messageBox.style.display = 'none';
+        }
+
+        // Fungsi untuk membuat dan menganimasikan dinosaurus jatuh
+        function createFallingDino() {
+            const dino = document.createElement('div');
+            dino.textContent = '🦖'; // Atau '🦕'
+            dino.classList.add('falling-dino');
+
+            // Atur posisi horizontal acak
+            const containerWidth = congratulationsSection.offsetWidth;
+            // Estimasi lebar dino (sekitar 5rem = 80px), bisa disesuaikan
+            const dinoEstimatedWidth = 80;
+            const randomLeft = Math.random() * (containerWidth - dinoEstimatedWidth);
+            dino.style.left = `${randomLeft}px`;
+
+            // Atur rotasi awal acak
+            dino.style.transform = `rotate(${Math.random() * 360}deg)`;
+
+            congratulationsSection.appendChild(dino);
+
+            // Memicu animasi
+            // Gunakan setTimeout untuk memastikan elemen dirender sebelum animasi dimulai
+            setTimeout(() => {
+                dino.classList.add('active-dino-fall');
+            }, 50); // Sedikit delay
+
+            // Hapus dino setelah animasi selesai
+            dino.addEventListener('animationend', () => {
+                dino.remove();
+            }, { once: true });
+        }
+
+        // --- Game Dino Logic ---
+        const canvas = document.getElementById('dinoGameCanvas');
+        const ctx = canvas.getContext('2d');
+        const gameScoreDisplay = document.getElementById('gameScore');
+        const gameOverMessage = document.getElementById('gameOverMessage');
+        const restartButton = document.getElementById('restartButton');
+        const gameInstructions = document.getElementById('gameInstructions'); // Get instructions element
+
+        // Load the custom dino image
+        const dinoImage = new Image();
+        dinoImage.src = 'tin.png'; // Using the filename you provided
+        let imageLoaded = false;
+
+        dinoImage.onload = () => {
+            imageLoaded = true;
+            // Calculate dino dimensions to fit within the canvas while maintaining aspect ratio
+            // Target height is 80% of canvas height for better playability
+            const targetHeight = canvas.height * 0.8; 
+            dinoHeight = targetHeight;
+            dinoWidth = dinoHeight * (dinoImage.width / dinoImage.height); // Maintain aspect ratio
+
+            // If the calculated width is too large for the canvas, scale by width instead
+            // This ensures the dino is not excessively wide, making the game unplayable
+            if (dinoWidth > canvas.width * 0.2) { // Limit dino width to 20% of canvas width
+                dinoWidth = canvas.width * 0.2;
+                dinoHeight = dinoWidth * (dinoImage.height / dinoImage.width); // Recalculate height based on new width
+            }
+            
+            dinoGroundY = canvas.height - dinoHeight - 10; // Recalculate ground Y
+
+            // If the game has already started (e.g., user entered password before image loaded),
+            // update dino's properties
+            if (dino) {
+                dino.height = dinoHeight;
+                dino.width = dinoWidth;
+                dino.y = dinoGroundY;
+            }
+        };
+
+        dinoImage.onerror = () => {
+            console.error("Gagal memuat gambar 'tin.png'. Pastikan file ada di folder yang sama.");
+            // Fallback: Jika gambar gagal dimuat, set imageLoaded to true agar game tetap bisa jalan dengan fallback rectangle
+            imageLoaded = true;
+            // Set fallback dimensions if image fails to load
+            dinoWidth = 50; // Fallback to a reasonable size
+            dinoHeight = 50;
+            dinoGroundY = canvas.height - dinoHeight - 10;
+        };
+
+
+        let dino;
+        let obstacles = [];
+        let gameFrame = 0;
+        let score = 0;
+        let gameSpeed = 5;
+        let gameOver = false;
+        let gameStarted = false; // New state variable to control game start
+        let lastObstacleFrame = 0;
+        const obstacleSpawnInterval = 100; // Frames between obstacle spawns
+
+        // Dino properties (initial values, will be updated on image load or fallback)
+        // Set initial small values, as they will be adjusted by dinoImage.onload or onerror
+        let dinoWidth = 50;
+        let dinoHeight = 50;
+        let dinoGroundY = canvas.height - dinoHeight - 10; // 10px from bottom
+
+        // Obstacle properties
+        const obstacleWidth = 20;
+        const obstacleMinHeight = 20;
+        const obstacleMaxHeight = 50;
+
+        class Dino {
+            constructor() {
+                this.x = 50;
+                this.y = dinoGroundY;
+                this.width = dinoWidth;
+                this.height = dinoHeight;
+                this.velocityY = 0;
+                this.isJumping = false;
+            }
+
+            draw() {
+                if (imageLoaded && dinoImage.complete && dinoImage.naturalHeight !== 0) {
+                    ctx.drawImage(dinoImage, this.x, this.y, this.width, this.height);
+                } else {
+                    // Fallback to rectangle if image not loaded or failed
+                    ctx.fillStyle = '#90ee90'; // Dino color (light green)
+                    ctx.fillRect(this.x, this.y, this.width, this.height);
+                    // Simple dino head/eye
+                    ctx.fillStyle = '#1a1a2e';
+                    ctx.fillRect(this.x + this.width - 8, this.y + 5, 5, 5);
+                }
+            }
+
+            jump() {
+                if (!this.isJumping) {
+                    this.velocityY = -10; // Jump strength
+                    this.isJumping = true;
+                }
+            }
+
+            update() {
+                this.y += this.velocityY;
+                this.velocityY += 0.5; // Gravity
+
+                if (this.y >= dinoGroundY) {
+                    this.y = dinoGroundY;
+                    this.velocityY = 0;
+                    this.isJumping = false;
+                }
+            }
+        }
+
+        class Obstacle {
+            constructor() {
+                this.x = canvas.width;
+                this.width = obstacleWidth;
+                this.height = Math.random() * (obstacleMaxHeight - obstacleMinHeight) + obstacleMinHeight;
+                this.y = canvas.height - this.height - 10; // Align with ground
+            }
+
+            draw() {
+                ctx.fillStyle = '#FF6347'; // Obstacle color (red)
+                ctx.fillRect(this.x, this.y, this.width, this.height);
+            }
+
+            update() {
+                this.x -= gameSpeed;
+            }
+        }
+
+        function startGame() {
+            gameStarted = true; // Set game to started
+            dino = new Dino();
+            obstacles = [];
+            gameFrame = 0;
+            score = 0;
+            gameSpeed = 5;
+            gameOver = false;
+            lastObstacleFrame = 0;
+
+            gameScoreDisplay.textContent = `Skor: ${score}`;
+            gameOverMessage.style.display = 'none';
+            restartButton.style.display = 'none';
+            canvas.style.display = 'block'; // Show canvas
+            gameInstructions.style.display = 'none'; // Hide instructions once game starts
+            gameScoreDisplay.style.display = 'block'; // Show score
+
+            gameLoop();
+        }
+
+        function gameLoop() {
+            if (gameOver) return;
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas
+
+            // Draw ground
+            ctx.fillStyle = '#4d4d6e'; // Dark ground color
+            ctx.fillRect(0, canvas.height - 10, canvas.width, 10);
+
+            dino.update();
+            dino.draw();
+
+            // Generate obstacles
+            if (gameFrame - lastObstacleFrame > obstacleSpawnInterval + Math.random() * 100) {
+                obstacles.push(new Obstacle());
+                lastObstacleFrame = gameFrame;
+            }
+
+            // Update and draw obstacles
+            for (let i = 0; i < obstacles.length; i++) {
+                obstacles[i].update();
+                obstacles[i].draw();
+
+                // Collision detection (more forgiving hitbox)
+                // Define a smaller hitbox for the dino relative to its visual size
+                const hitboxWidth = dino.width * 0.6; // 60% of dino's width
+                const hitboxHeight = dino.height * 0.8; // 80% of dino's height
+                const hitboxX = dino.x + (dino.width - hitboxWidth) / 2; // Center hitbox horizontally
+                const hitboxY = dino.y + (dino.height - hitboxHeight); // Align hitbox to the bottom of the dino
+
+                // Define a smaller hitbox for the obstacle
+                const obstacleHitboxWidth = obstacles[i].width * 0.8; // 80% of obstacle's width
+                const obstacleHitboxHeight = obstacles[i].height * 0.8; // 80% of obstacle's height
+                const obstacleHitboxX = obstacles[i].x + (obstacles[i].width - obstacleHitboxWidth) / 2; // Center hitbox horizontally
+                const obstacleHitboxY = obstacles[i].y + (obstacles[i].height - obstacleHitboxHeight); // Align hitbox to the bottom of the obstacle
+
+
+                if (
+                    hitboxX < obstacleHitboxX + obstacleHitboxWidth &&
+                    hitboxX + hitboxWidth > obstacleHitboxX &&
+                    hitboxY < obstacleHitboxY + obstacleHitboxHeight &&
+                    hitboxY + hitboxHeight > obstacleHitboxY
+                ) {
+                    endGame(); // Call endGame without a win flag, it will check score
+                    return;
+                }
+
+                // Remove off-screen obstacles
+                if (obstacles[i].x + obstacles[i].width < 0) {
+                    obstacles.splice(i, 1);
+                    i--;
+                    score++;
+                    gameScoreDisplay.textContent = `Skor: ${score}`;
+                    if (score === 100) { // Check for win condition
+                        endGame(true); // Pass a 'win' flag
+                        return;
+                    }
+                    if (score % 10 === 0) { // Increase speed every 10 points
+                        gameSpeed += 0.5;
+                    }
+                }
+            }
+
+            gameFrame++;
+            requestAnimationFrame(gameLoop);
+        }
+
+        function endGame(isWin = false) {
+            gameOver = true;
+            gameStarted = false; // Reset game started state
+
+            if (isWin) {
+                gameOverMessage.textContent = "hpmp"; // Win message
+                gameOverMessage.style.color = '#90ee90'; // Green for win
+            } else if (score < 10) { // Score less than 10
+                gameOverMessage.textContent = "haha noob!";
+                gameOverMessage.style.color = '#FF6347'; // Red for loss
+            } else if (score < 20) { // Score 10 to 19
+                gameOverMessage.textContent = "belajar lagi ya dek!";
+                gameOverMessage.style.color = '#FF6347';
+            } else if (score < 30) { // Score 20 to 29
+                gameOverMessage.textContent = "masih jauh";
+                gameOverMessage.style.color = '#FF6347';
+            } else if (score < 40) { // Score 30 to 39
+                gameOverMessage.textContent = "yahhh";
+                gameOverMessage.style.color = '#FF6347';
+            } else if (score < 50) { // Score 40 to 49
+                gameOverMessage.textContent = "dikit lagi";
+                gameOverMessage.style.color = '#FF6347';
+            } else if (score < 99) { // Score 50 to 98
+                gameOverMessage.textContent = "kyaaa";
+                gameOverMessage.style.color = '#FF6347';
+            } else { // This case should ideally only be hit if score is 99 (from previous logic)
+                gameOverMessage.textContent = "ara-ara";
+                gameOverMessage.style.color = '#FF6347';
+            }
+
+            gameOverMessage.style.display = 'block';
+            restartButton.style.display = 'block';
+            canvas.style.display = 'none'; // Hide canvas on game over
+            gameInstructions.style.display = 'none'; // Hide instructions
+            gameScoreDisplay.style.display = 'none'; // Hide score
+        }
+
+        // Event listener for game
+        document.addEventListener('keydown', (e) => {
+            // Only start game if password section is hidden, game is not over, and game hasn't started yet
+            if (e.code === 'Space' && !gameOver && !gameStarted && congratulationsSection.style.display === 'block') {
+                startGame();
+            } else if (e.code === 'Space' && !gameOver && gameStarted) {
+                dino.jump();
+            }
+        });
+
+        canvas.addEventListener('click', () => {
+            // Allow click to start game if not started, and jump if started
+            if (!gameOver && !gameStarted && congratulationsSection.style.display === 'block') {
+                startGame();
+            } else if (!gameOver && gameStarted) {
+                dino.jump();
+            }
+        });
+
+        restartButton.addEventListener('click', startGame);
+
+        // --- End Game Dino Logic ---
+
+
+        // Menambahkan event listener ke keypad
+        keypad.addEventListener('click', (event) => {
+            const target = event.target;
+            // Pastikan yang diklik adalah tombol keypad
+            if (target.classList.contains('keypad-btn')) {
+                const value = target.dataset.value;
+                const action = target.dataset.action;
+
+                hideMessage(); // Sembunyikan pesan jika ada interaksi baru
+
+                if (value) { // Jika tombol angka
+                    // Batasi panjang password sesuai dengan panjang correctPassword
+                    if (enteredPassword.length < correctPassword.length) {
+                        enteredPassword += value;
+                        updatePasswordDisplay();
+                    }
+                } else if (action === 'clear') { // Jika tombol "Hapus"
+                    enteredPassword = enteredPassword.slice(0, -1); // Hapus karakter terakhir
+                    updatePasswordDisplay();
+                } else if (action === 'submit') { // Jika tombol "Masuk"
+                    // Hanya izinkan submit jika panjang password sudah sesuai
+                    if (enteredPassword.length === correctPassword.length) {
+                        if (enteredPassword === correctPassword) {
+                            // Jika password benar, sembunyikan bagian password dan tampilkan ucapan selamat
+                            passwordSection.style.display = 'none';
+                            congratulationsSection.style.display = 'block';
+
+                            // --- Memicu banyak animasi dinosaurus jatuh ---
+                            const numberOfDinos = 15; // Jumlah dinosaurus yang jatuh
+                            for (let i = 0; i < numberOfDinos; i++) {
+                                setTimeout(() => {
+                                    createFallingDino();
+                                }, i * 200); // Jeda 200ms antar dinosaurus
+                            }
+                            // --- Akhir pemicu animasi dinosaurus jatuh ---
+
+                            // Game tidak dimulai otomatis di sini, menunggu Spasi/klik
+
+                        } else {
+                            // Jika password salah, tampilkan pesan kesalahan
+                            showMessage("Kata sandi salah. Silakan coba lagi.");
+                            enteredPassword = ""; // Reset password yang dimasukkan
+                            updatePasswordDisplay();
+                        }
+                    } else {
+                        showMessage(`Kata sandi harus ${correctPassword.length} digit.`);
+                    }
+                }
+            }
+        });
+
+        // Inisialisasi tampilan password saat pertama kali dimuat
+        updatePasswordDisplay();
+    </script>
+</body>
+</html>
