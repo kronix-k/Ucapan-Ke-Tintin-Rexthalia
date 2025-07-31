@@ -1,4 +1,4 @@
-Website Ucapan Selamat Spesial untuk Tintin Rexthalia Debut 2.0
+Website Ucapan Selamat Spesial untuk Tintin Rexthalia Debut 2.0 🦖🦕
 Selamat datang di repositori website ucapan selamat interaktif ini! Website ini dibuat khusus untuk merayakan momen debut 2.0 yang spektakuler dari Tintin Rexthalia.
 
 Deskripsi Proyek
@@ -65,6 +65,10 @@ Klik tombol "Mulai Ulang" untuk bermain lagi.
 
 Kata Sandi Website
 Kata sandi untuk membuka website adalah: 01082025 (format DDMMYYYY).
+
+Akses Website Online
+Anda dapat mengakses website ini secara langsung melalui GitHub Pages di:
+https://kronix-k.github.io/Ucapan-Ke-Tintin-Rexthalia/
 
 Kredit
 Terinspirasi dari game dinosaurus offline Google Chrome.
