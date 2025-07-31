@@ -38,7 +38,7 @@ Untuk menjalankan website ini di komputer Anda:
 
 Kloning Repositori:
 
-git clone https://github.com/USERNAME_ANDA/tintin-rexthalia-debut.git
+git clone (https://github.com/kronix-k/Ucapan-Ke-Tintin-Rexthalia.git)
 
 (Ganti USERNAME_ANDA dengan username GitHub Anda dan tintin-rexthalia-debut dengan nama repositori Anda jika berbeda.)
 
