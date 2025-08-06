@@ -1,5 +1,5 @@
-Website Ucapan Selamat Spesial untuk Tintin Rexthalia Debut 2.0 🦖🦕
-Selamat datang di repositori website ucapan selamat interaktif ini! Website ini dibuat khusus untuk merayakan momen debut 2.0 yang spektakuler dari Tintin Rexthalia.
+Website Ucapan Selamat Spesial untuk Lia 🦖🦕
+Selamat datang di repositori website ucapan selamat interaktif ini! Website ini dibuat khusus untuk merayakan momen debut yang spektakuler dari Tintin Rexthalia.
 
 Deskripsi Proyek
 Website sederhana namun penuh makna ini dirancang untuk memberikan pengalaman unik bagi para penggemar dan orang-orang terdekat Tintin. Pengunjung harus memasukkan kata sandi rahasia untuk membuka pesan ucapan selamat spesial, yang kemudian dilanjutkan dengan kejutan mini-game bertema dinosaurus.
